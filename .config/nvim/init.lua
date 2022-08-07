@@ -1,1 +1,1 @@
-print("Initializing...")
+require("asang")
