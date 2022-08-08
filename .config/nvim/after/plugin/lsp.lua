@@ -1,6 +1,6 @@
 local Remap = require("asang.keymap")
 local nnoremap = Remap.nnoremap
-local inoremap = Remap.inorema
+local inoremap = Remap.inoremap
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -16,14 +16,14 @@ local source_mapping = {
 }
 
 
-local tabnine = require("cmp_tabnine.config")
-tabnine:setup({
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = "..",
-})
+-- local tabnine = require("cmp_tabnine.config")
+-- tabnine:setup({
+-- 	max_lines = 1000,
+-- 	max_num_results = 20,
+-- 	sort = true,
+-- 	run_on_every_keystroke = true,
+-- 	snippet_placeholder = "..",
+-- })
 
 local function config(_config)
 	return vim.tbl_deep_extend("force", {
@@ -62,25 +62,25 @@ cmp.setup({
 		["<C-Space>"] = cmp.mapping.complete(),
 	}),
 
-	formatting = {
-		format = function(entry, vim_item)
-			vim_item.kind = lspkind.presets.default[vim_item.kind]
-			local menu = source_mapping[entry.source.name]
-			if entry.source.name == "cmp_tabnine" then
-				if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-					menu = entry.completion_item.data.detail .. " " .. menu
-				end
-				vim_item.kind = ""
-			end
-			vim_item.menu = menu
-			return vim_item
-		end,
-	},
+	-- formatting = {
+	-- 	format = function(entry, vim_item)
+	-- 		vim_item.kind = lspkind.presets.default[vim_item.kind]
+	-- 		local menu = source_mapping[entry.source.name]
+	-- 		if entry.source.name == "cmp_tabnine" then
+	-- 			if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+	-- 				menu = entry.completion_item.data.detail .. " " .. menu
+	-- 			end
+	-- 			vim_item.kind = ""
+	-- 		end
+	-- 		vim_item.menu = menu
+	-- 		return vim_item
+	-- 	end,
+	-- },
 
 	sources = {
 		-- tabnine completion? yayaya
 
-		{ name = "cmp_tabnine" },
+		-- { name = "cmp_tabnine" },
 
 		{ name = "nvim_lsp" },
 
@@ -132,19 +132,17 @@ require("luasnip.loaders.from_vscode").lazy_load({
 	exclude = {},
 })
 
-require("lspconfig").gopls.setup {
-    cmd = {"gopls", "serve"},
-    filetypes = {"go", "gomod"},
-    root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
-    settings = {
-      gopls = {
-        analyses = {
-          unusedparams = true,
-        },
-        staticcheck = true,
-      },
-    },
-  }
+require("lspconfig").gopls.setup(config({
+	cmd = { "gopls", "serve" },
+	settings = {
+		gopls = {
+			analyses = {
+				unusedparams = true,
+			},
+			staticcheck = true,
+		},
+	},
+}))
 
 function OrgImports(waigoplst_ms)
     local params = vim.lsp.util.make_range_params()
@@ -161,4 +159,5 @@ function OrgImports(waigoplst_ms)
     end
   end
 
+vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
 vim.cmd [[autocmd BufWritePre *.go lua OrgImports(1000)]]
