@@ -9,6 +9,8 @@ return require("packer").startup(function()
         run = ":TSUpdate"
     })
 
+    --Autopair
+    use("windwp/nvim-autopairs")
 
     --Telescope
     use("nvim-lua/plenary.nvim")
@@ -24,9 +26,12 @@ return require("packer").startup(function()
     use("simrat39/symbols-outline.nvim")
     use("L3MON4D3/LuaSnip")
     use("saadparwaiz1/cmp_luasnip")
-    use("tpope/vim-commentary")
+    use("numToStr/Comment.nvim", { require('Comment').setup() })
 
     --NVIM Tree
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
+
+    --Lualine
+    use("nvim-lualine/lualine.nvim", { require('lualine').setup() })
 end)
