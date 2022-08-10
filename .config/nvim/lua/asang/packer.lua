@@ -22,8 +22,11 @@ return require("packer").startup(function()
     use("onsails/lspkind-nvim")
     use("tzachar/cmp-tabnine", { run = "./install.sh" })
     use("simrat39/symbols-outline.nvim")
-   
     use("L3MON4D3/LuaSnip")
     use("saadparwaiz1/cmp_luasnip")
     use("tpope/vim-commentary")
+
+    --NVIM Tree
+    use("kyazdani42/nvim-web-devicons")
+    use("kyazdani42/nvim-tree.lua")
 end)
